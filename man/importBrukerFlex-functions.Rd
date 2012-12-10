@@ -1,0 +1,43 @@
+\name{importBrukerFlex}
+\alias{importBrukerFlex}
+\title{Import Bruker Daltonics *flex files}
+\usage{
+  importBrukerFlex(path, ...)
+}
+\arguments{
+  \item{path}{\code{character}, path to directory or file
+  which should be read in.}
+
+  \item{\ldots}{arguments to be passed to
+  \code{\link[readBrukerFlexData]{readBrukerFlexFile}}.}
+}
+\value{
+  a \code{list} of
+  \code{\link[MALDIquant]{MassSpectrum-class}} objects.
+}
+\description{
+  This function imports files in Bruker Daltonics
+  *flex-series file format into
+  \code{\link[MALDIquant]{MassSpectrum-class}} objects.
+}
+\examples{
+library("MALDIquant")
+library("MALDIquantForeign")
+
+## get example directory
+exampleDirectory <- system.file(file.path("tests", "data"),
+                                package="MALDIquantForeign")
+
+s <- importBrukerFlex(exampleDirectory)
+}
+\author{
+  Sebastian Gibb
+}
+\references{
+  \url{http://strimmerlab.org/software/maldiquant/}
+}
+\seealso{
+  \code{\link[MALDIquant]{MassSpectrum-class}},
+  \code{\link[readBrukerFlexData]{readBrukerFlexFile}}
+}
+
