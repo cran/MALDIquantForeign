@@ -1,6 +1,15 @@
 RELEASE HISTORY OF THE "MALDIquantForeign" PACKAGE
 ==================================================
 
+Version 0.2 [2013-01-14]:
+- export: fix empty filenames.
+- export,list: stop if directory doesn't exist.
+- exportMsd: complete rewrite, write xml files manually instead of using the 
+  XML package (increasing speed).
+- exportMsd: fix peaks argument.
+- exportMsd tests: respect endianness.
+- import: respect verbose argument in import(type=auto).
+
 Version 0.1 [2012-12-10]:
 - First public release.
 - Supported file formats:
