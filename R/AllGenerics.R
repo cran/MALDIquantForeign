@@ -1,4 +1,4 @@
-## Copyright 2012 Sebastian Gibb
+## Copyright 2012-2013 Sebastian Gibb
 ## <mail@sebastiangibb.de>
 ##
 ## This file is part of MALDIquantForeign for R and related languages.
@@ -20,16 +20,12 @@ if (is.null(getGeneric(".composeFilename")))
   setGeneric(".composeFilename", function(x, ...) standardGeneric(".composeFilename"))
 if (is.null(getGeneric(".exportTab")))
   setGeneric(".exportTab", function(x, ...) standardGeneric(".exportTab"))
-if (is.null(getGeneric(".export.tab")))
-  setGeneric(".export.tab", function(x, ...) standardGeneric(".export.tab"))
 if (is.null(getGeneric(".exportCsv")))
   setGeneric(".exportCsv", function(x, ...) standardGeneric(".exportCsv"))
-if (is.null(getGeneric(".export.csv")))
-  setGeneric(".export.csv", function(x, ...) standardGeneric(".export.csv"))
 if (is.null(getGeneric(".exportMsd")))
   setGeneric(".exportMsd", function(x, ...) standardGeneric(".exportMsd"))
-if (is.null(getGeneric(".export.msd")))
-  setGeneric(".export.msd", function(x, ...) standardGeneric(".export.msd"))
+if (is.null(getGeneric(".exportMzMl")))
+  setGeneric(".exportMzMl", function(x, ...) standardGeneric(".exportMzMl"))
 if (is.null(getGeneric("export")))
   setGeneric("export", function(x, ...) standardGeneric("export"))
 if (is.null(getGeneric("exportTab")))
@@ -38,3 +34,5 @@ if (is.null(getGeneric("exportCsv")))
   setGeneric("exportCsv", function(x, ...) standardGeneric("exportCsv"))
 if (is.null(getGeneric("exportMsd")))
   setGeneric("exportMsd", function(x, ...) standardGeneric("exportMsd"))
+if (is.null(getGeneric("exportMzMl")))
+  setGeneric("exportMzMl", function(x, ...) standardGeneric("exportMzMl"))

@@ -28,6 +28,7 @@
 #'  tab \tab \code{\link[MALDIquantForeign]{importTab}} \cr
 #'  csv \tab \code{\link[MALDIquantForeign]{importCsv}} \cr
 #'  fid \tab \code{\link[MALDIquantForeign]{importBrukerFlex}} \cr
+#'  ciphergen \tab \code{\link[MALDIquantForeign]{importCiphergenXml}} \cr
 #'  mzXML \tab \code{\link[MALDIquantForeign]{importMzXml}} \cr
 #'  mzML \tab \code{\link[MALDIquantForeign]{importMzMl}} \cr
 #' }
@@ -39,6 +40,7 @@
 #'  tab \tab \code{\link[MALDIquantForeign]{exportTab}} \cr
 #'  csv \tab \code{\link[MALDIquantForeign]{exportCsv}} \cr
 #'  msd \tab \code{\link[MALDIquantForeign]{exportMsd}} \cr
+#'  mzML \tab \code{\link[MALDIquantForeign]{exportMzMl}} \cr
 #' }
 #' }
 #'
@@ -52,7 +54,7 @@
 #' @references \url{http://strimmerlab.org/software/maldiquant/}
 #' @examples
 #' library("MALDIquantForeign")
-#' 
+#'
 #' supportedFileFormats()
 #'
 #' @rdname supportedFileFormats-functions
@@ -63,20 +65,23 @@ supportedFileFormats <- function() {
 }
 
 #' @keywords internal
-importFormats <- data.frame(type=c("txt", "tab", "csv", "fid", "mzxml", "mzml"),
+importFormats <- data.frame(type=c("txt", "tab", "csv", "fid", "ciphergen",
+                                   "mzxml", "mzml"),
                             pattern=c("^.*\\.txt$", "^.*\\.tab$",
-                                      "^.*\\.csv$", "^fid$", 
-                                      "^.*\\.mz[Xx][Mm][Ll]$",
-                                      "^.*\\.mz[Mm][Ll]$"),
+                                      "^.*\\.csv$", "^fid$",
+                                      "^.*\\.xml$", "^.*\\.mzXML$",
+                                      "^.*\\.mzML$"),
                             handler=c(rep(".importTab", 2),
                                       ".importCsv", ".importBrukerFlex",
-                                      ".importMzXml", ".importMzMl"),
+                                      ".importCiphergenXml", ".importMzXml",
+                                      ".importMzMl"),
                             stringsAsFactors=FALSE)
 
 #' @keywords internal
-exportFormats <- data.frame(type=c("tab", "csv", "msd"),
-                            extension=c("tab", "csv", "msd"),
-                            handler=c(".exportTab", ".exportCsv", 
-                                      ".exportMsd"),
+exportFormats <- data.frame(type=c("tab", "csv", "msd", "mzml"),
+                            extension=c("tab", "csv", "msd", "mzML"),
+                            onefile=c(FALSE, FALSE, FALSE, TRUE),
+                            handler=c(".exportTab", ".exportCsv",
+                                      ".exportMsd", ".exportMzMl"),
                             stringsAsFactors=FALSE)
 

@@ -17,16 +17,39 @@
 ## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
 
 #' @keywords internal
-.importAuto <- function(path, pattern, verbose=FALSE, ...) {
-  if (missing(pattern)) {
-    pattern <- unique(importFormats$pattern)
-  } 
+.importAuto <- function(path, verbose=FALSE, ...) {
 
-  files <- lapply(pattern, .files, path=path) 
-  n <- lapply(files, length)
+  files <- lapply(importFormats$pattern, .files, path=path)
+  names(files) <- importFormats$type
+
+  ## test xml files for ciphergen format
+  files$ciphergen <- .testCiphergenXml(files$ciphergen)
+
+  n <- vapply(files, length, integer(1))
+
+  if (all(n)) {
+    stop("Could not detect any supported file type.")
+  }
+
   m <- which.max(n)
 
-  return(import(path=files[[m]], type=tolower(.fileExtension(files[[m]][1])),
-         pattern=pattern[m], verbose=verbose, ...))
+  if (verbose) {
+    message(n[m], " files of type=", sQuote(importFormats$type[m]), " found.")
+  }
+
+  return(import(path=files[[m]], type=importFormats$type[m],
+         pattern=importFormats$pattern[m], verbose=verbose, ...))
+}
+
+#' @keywords internal
+# test xml for ciphergen format
+# returns files in ciphergen xml format
+.testCiphergenXml <- function(files) {
+  ## read first 4 lines of each file
+  l <- lapply(files, readLines, n=4)
+  p <- lapply(l, grepl, pattern="<spectrum>|<fileVersion>|<spectrumName>")
+  s <- vapply(p, sum, integer(1))
+  isCiphergen <- s >= 2
+  return(files[isCiphergen])
 }
 

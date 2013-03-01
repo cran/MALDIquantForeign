@@ -1,4 +1,4 @@
-## Copyright 2012 Sebastian Gibb
+## Copyright 2013 Sebastian Gibb
 ## <mail@sebastiangibb.de>
 ##
 ## This file is part of MALDIquantForeign for R and related languages.
@@ -17,23 +17,21 @@
 ## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
 
 #' @keywords internal
-.list.files <- function(path, pattern, recursive=TRUE, ignore.case=TRUE) {
-  return(normalizePath(list.files(path=path, pattern=pattern,
-                                  recursive=recursive, ignore.case=ignore.case,
-                                  full.names=TRUE)))
+.importCiphergenXml <- function(file, verbose=FALSE) {
+
+  if (verbose) {
+    message("Reading spectrum from ", sQuote(file), " ...")
+  }
+
+  if (!file.exists(file)) {
+    stop("File ", sQuote(file), " doesn't exists!")
+  }
+
+  ## read file
+  s <- .parseCiphergenXml(file=file)
+
+  return(list(createMassSpectrum(mass=s$spectrum$mass,
+                                 intensity=s$spectrum$intensity,
+                                 metaData=s$metaData)))
 }
 
-#' @keywords internal
-.files <- function(path, pattern, ignore.case=TRUE, ...) {
-  isDir <- file.info(path)$isdir
-
-  files <- normalizePath(path[!isDir])
-
-  isMatching <- unlist(regexpr(pattern=pattern, text=basename(files),
-                               ignore.case=ignore.case)) != -1
-
-  files <- files[isMatching]
-  files <- c(files, .list.files(path=path[isDir], pattern=pattern,
-                                ignore.case=ignore.case, ...))
-  return(unique(files))
-}

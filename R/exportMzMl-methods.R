@@ -1,4 +1,4 @@
-## Copyright 2012 Sebastian Gibb
+## Copyright 2013 Sebastian Gibb
 ## <mail@sebastiangibb.de>
 ##
 ## This file is part of MALDIquantForeign for R and related languages.
@@ -16,28 +16,17 @@
 ## You should have received a copy of the GNU General Public License
 ## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
 
-#' @keywords internal
-.importMzMl <- function(file, verbose=FALSE) {
-  
-  if (verbose) {
-    message("Reading spectrum from ", sQuote(file), " ...")
-  }
-  
-  if (!file.exists(file)) {
-    stop("File ", sQuote(file), " doesn't exists!")
-  }
+setMethod(f=".exportMzMl",
+  signature=signature(x="MassSpectrum"),
+  definition=function(x, file, id=.withoutFileExtension(basename(file)), ...) {
 
-  ## read file
-  s <- .parseMzMl(file=file, verbose=verbose)
+  return(.writeMzMlDocument(x=list(x), file=file, id=id, ...))
+})
 
-  spectra <- lapply(s$spectra, function(x, globalS=s) {
-    m <- modifyList(s$metaData, x$metaData)
-    m$file <- file
-    return(createMassSpectrum(mass=x$mass,
-                              intensity=x$intensity,
-                              metaData=m))
-  })
+setMethod(f=".exportMzMl",
+  signature=signature(x="list"),
+  definition=function(x, file, id=.withoutFileExtension(basename(file)), ...) {
 
-  return(spectra)
-}
+  return(.writeMzMlDocument(x=x, file=file, id=id, ...))
+})
 

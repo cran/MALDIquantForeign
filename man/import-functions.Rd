@@ -10,9 +10,11 @@
   which should be read in.}
 
   \item{type}{\code{character}, file format. If \code{type}
-  is set to \dQuote{auto} the file extension (if
-  \code{path} is a directory the most represented file
-  extension) is used.}
+  is set to \dQuote{auto} MALDIquant tries to detect the
+  correct file type automatically. It often depends on the
+  file extension (if \code{path} is a directory the most
+  represented file extension is used; \code{pattern}
+  argument is ignored).}
 
   \item{pattern}{\code{character}, a regular expression to
   find files in a directory (see details).}
@@ -37,9 +39,18 @@
   \code{\link[MALDIquantForeign]{importTab}} \cr csv \tab
   \code{\link[MALDIquantForeign]{importCsv}} \cr fid \tab
   \code{\link[MALDIquantForeign]{importBrukerFlex}} \cr
+  ciphergen \tab
+  \code{\link[MALDIquantForeign]{importCiphergenXml}} \cr
   mzXML \tab \code{\link[MALDIquantForeign]{importMzXml}}
   \cr mzML \tab \code{\link[MALDIquantForeign]{importMzMl}}
   \cr }
+
+  \code{path}: In addition to the above mentioned file
+  types the following (compressed) archives are supported,
+  too: zip, tar, tar.gz, tar.bz2, tar.xz. The archives are
+  uncompressed in a temporary directory. Afterwards the
+  \code{\link[MALDIquantForeign]{import}} function is
+  called (with \code{type="auto"}).
 
   \code{pattern}: Sometimes unusual file extensions are
   used (e.g. \code{"*.xml"} for mzXML files). In this case
@@ -65,6 +76,9 @@ s <- import(exampleDirectory, type="tab", pattern="^.*\\\\.txt")
 
 ## import single mzML file
 s <- import(file.path(exampleDirectory, "tiny1.mzML1.1.mzML"))
+
+## import gzipped csv file
+s <- import(file.path(exampleDirectory, "compressed", "csv1.csv.gz"))
 }
 \author{
   Sebastian Gibb

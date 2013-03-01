@@ -1,10 +1,26 @@
 RELEASE HISTORY OF THE "MALDIquantForeign" PACKAGE
 ==================================================
 
+Version 0.3 [2013-03-01]:
+- Add basic support for mzML export.
+- Add basic import support for Ciphergen XML files.
+- Add missing "usage" section in export methods manual pages.
+- import: add http(s):// and ftp:// support.
+- import: add uncompression support to allow import of
+  zip/tar.{gz,bz2,xz}-archives.
+- .files: returns only unique file names;
+  affected functions: all import functions.
+- .make.unique: generates c("a1", "a2") instead of c("a", "a1") and
+  c("a001", ...,  "a099", "a100") instead of c("a", ..., "a98", "a99");
+  affected method: export,list.
+- DESCRIPTION: move base64enc, digest, readBrukerFlexData, readMzXmlData and
+  XML to "Imports".
+- DESCRIPTION: remove MALDIquant from the "Imports" field.
+
 Version 0.2 [2013-01-14]:
 - export: fix empty filenames.
 - export,list: stop if directory doesn't exist.
-- exportMsd: complete rewrite, write xml files manually instead of using the 
+- exportMsd: complete rewrite, write xml files manually instead of using the
   XML package (increasing speed).
 - exportMsd: fix peaks argument.
 - exportMsd tests: respect endianness.

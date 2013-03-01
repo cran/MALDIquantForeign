@@ -1,8 +1,15 @@
-\name{export}
+\name{export,AbstractMassObject-method}
 \alias{export}
 \alias{export,AbstractMassObject-method}
 \alias{export,list-method}
 \title{Export files}
+\usage{
+  \S4method{export}{AbstractMassObject}(x, file,
+    type="auto", force=FALSE, \ldots)
+
+  \S4method{export}{list}(x, path, type, force=FALSE,
+    \ldots)
+}
 \arguments{
   \item{x}{a
   \code{\link[MALDIquant]{AbstractMassObject-class}} object
@@ -39,7 +46,8 @@
   Specific export functions: \tabular{ll}{ tab \tab
   \code{\link[MALDIquantForeign]{exportTab}} \cr csv \tab
   \code{\link[MALDIquantForeign]{exportCsv}} \cr msd \tab
-  \code{\link[MALDIquantForeign]{exportMsd}} \cr }
+  \code{\link[MALDIquantForeign]{exportMsd}} \cr mzML \tab
+  \code{\link[MALDIquantForeign]{exportMzMl}} \cr }
 }
 \examples{
 \dontrun{
