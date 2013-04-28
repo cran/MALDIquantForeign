@@ -1,8 +1,8 @@
-\name{importCiphergenXml}
-\alias{importCiphergenXml}
-\title{Import Ciphergen XML files}
+\name{importImzMl}
+\alias{importImzMl}
+\title{Import imzML files}
 \usage{
-  importCiphergenXml(path, ...)
+  importImzMl(path, ...)
 }
 \arguments{
   \item{path}{\code{character}, path to directory or file
@@ -16,9 +16,8 @@
   \code{\link[MALDIquant]{MassSpectrum-class}} objects.
 }
 \description{
-  This function imports files in Ciphergen XML file format
-  into \code{\link[MALDIquant]{MassSpectrum-class}}
-  objects.
+  This function imports files in imzML file format into
+  \code{\link[MALDIquant]{MassSpectrum-class}} objects.
 }
 \examples{
 library("MALDIquant")
@@ -29,13 +28,15 @@ exampleDirectory <- system.file(file.path("tests", "data"),
                                 package="MALDIquantForeign")
 
 ## import
-s <- importCiphergenXml(exampleDirectory)
+s <- importImzMl(exampleDirectory)
 }
 \author{
   Sebastian Gibb
 }
 \references{
-  \url{http://strimmerlab.org/software/maldiquant/}
+  \url{http://strimmerlab.org/software/maldiquant/}, \cr
+  Definition of \code{imzML} format:
+  \url{http://www.imzml.org/}
 }
 \seealso{
   \code{\link[MALDIquant]{MassSpectrum-class}}

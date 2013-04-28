@@ -31,6 +31,8 @@
 #'  ciphergen \tab \code{\link[MALDIquantForeign]{importCiphergenXml}} \cr
 #'  mzXML \tab \code{\link[MALDIquantForeign]{importMzXml}} \cr
 #'  mzML \tab \code{\link[MALDIquantForeign]{importMzMl}} \cr
+#'  imzML \tab \code{\link[MALDIquantForeign]{importImzMl}} \cr
+#'  analyze \tab \code{\link[MALDIquantForeign]{importAnalyze}} \cr
 #' }
 #'
 #' \code{path}: In addition to the above mentioned file types the
@@ -54,6 +56,7 @@
 #'  \code{pattern} argument is ignored).
 #' @param pattern \code{character}, a regular expression to find files in a
 #'  directory (see details).
+#' @param removeEmptySpectra \code{logical}, should empty spectra excluded?
 #' @param verbose \code{logical}, verbose output?
 #' @param \ldots arguments to be passed to specific import functions.
 #'
@@ -86,13 +89,13 @@
 #'
 #' @rdname import-functions
 #' @export
-import <- function(path, type="auto", pattern, verbose=FALSE, ...) {
+import <- function(path, type="auto", pattern, removeEmptySpectra=TRUE, verbose=TRUE, ...) {
 
   ## download file if needed
   isUrl <- .isUrl(path)
 
   if (any(isUrl)) {
-    path[isUrl] <- .download(path[isUrl])
+    path[isUrl] <- .download(path[isUrl], verbose=verbose)
     on.exit(.cleanupDownloadedTmpFiles())
   }
 
@@ -122,7 +125,8 @@ import <- function(path, type="auto", pattern, verbose=FALSE, ...) {
     if (!missing(pattern)) {
       warning("User defined ", sQuote("pattern"), " is ignored in auto-mode.")
     }
-    return(.importAuto(path=path, verbose=verbose, ...))
+    return(.importAuto(path=path, removeEmptySpectra=removeEmptySpectra,
+                       verbose=verbose, ...))
   } else {
     ## user-defined file type
     if (missing(pattern)) {
@@ -134,6 +138,18 @@ import <- function(path, type="auto", pattern, verbose=FALSE, ...) {
     if (is.null(s)) {
       stop("Import failed! Unsupported file type?")
     }
+
+    if (removeEmptySpectra) {
+      emptyIdx <- MALDIquant::findEmptyMassObjects(s)
+
+      if (length(emptyIdx)) {
+        if (verbose) {
+          message("Remove ", length(emptyIdx), " empty spectra.")
+        }
+        return(s[-emptyIdx])
+      }
+    }
+
     return(s)
   }
 }
@@ -268,13 +284,13 @@ importMzXml <- function(path, ...) {
 #'
 #' @param path \code{character}, path to directory or file which should be read
 #'  in.
-#' @param verbose \code{logical}, verbose output?
+#' @param \ldots arguments to be passed to
+#' \code{\link[MALDIquantForeign]{import}}.
 #'
 #' @return a \code{list} of \code{\link[MALDIquant]{MassSpectrum-class}}
 #'  objects.
 #' @seealso
-#' \code{\link[MALDIquant]{MassSpectrum-class}},
-#' \code{\link[readMzXmlData]{readMzXmlFile}}
+#' \code{\link[MALDIquant]{MassSpectrum-class}}
 #' @author Sebastian Gibb
 #' @references \url{http://strimmerlab.org/software/maldiquant/}, \cr
 #' Definition of \code{mzML} format:
@@ -293,8 +309,44 @@ importMzXml <- function(path, ...) {
 #'
 #' @rdname importMzMl-functions
 #' @export
-importMzMl <- function(path, verbose=FALSE) {
-  return(import(path=path, type="mzml", verbose=verbose))
+importMzMl <- function(path, ...) {
+  return(import(path=path, type="mzml", ...))
+}
+
+#' Import imzML files
+#'
+#' This function imports files in imzML file format
+#' into \code{\link[MALDIquant]{MassSpectrum-class}} objects.
+#'
+#' @param path \code{character}, path to directory or file which should be read
+#'  in.
+#' @param \ldots arguments to be passed to
+#' \code{\link[MALDIquantForeign]{import}}.
+#'
+#' @return a \code{list} of \code{\link[MALDIquant]{MassSpectrum-class}}
+#'  objects.
+#' @seealso
+#' \code{\link[MALDIquant]{MassSpectrum-class}}
+#' @author Sebastian Gibb
+#' @references \url{http://strimmerlab.org/software/maldiquant/}, \cr
+#' Definition of \code{imzML} format:
+#' \url{http://www.imzml.org/}
+#' @examples
+#'
+#' library("MALDIquant")
+#' library("MALDIquantForeign")
+#'
+#' ## get example directory
+#' exampleDirectory <- system.file(file.path("tests", "data"),
+#'                                 package="MALDIquantForeign")
+#'
+#' ## import
+#' s <- importImzMl(exampleDirectory)
+#'
+#' @rdname importImzMl-functions
+#' @export
+importImzMl <- function(path, ...) {
+  return(import(path=path, type="imzml", ...))
 }
 
 #' Import Ciphergen XML files
@@ -304,7 +356,8 @@ importMzMl <- function(path, verbose=FALSE) {
 #'
 #' @param path \code{character}, path to directory or file which should be read
 #'  in.
-#' @param verbose \code{logical}, verbose output?
+#' @param \ldots arguments to be passed to
+#' \code{\link[MALDIquantForeign]{import}}.
 #'
 #' @return a \code{list} of \code{\link[MALDIquant]{MassSpectrum-class}}
 #'  objects.
@@ -326,7 +379,31 @@ importMzMl <- function(path, verbose=FALSE) {
 #'
 #' @rdname importCiphergenXml-functions
 #' @export
-importCiphergenXml <- function(path, verbose=FALSE) {
-  return(import(path=path, type="ciphergen", verbose=verbose))
+importCiphergenXml <- function(path, ...) {
+  return(import(path=path, type="ciphergen", ...))
+}
+
+#' Import Analyze 7.5 files
+#'
+#' This function imports files in Analyze 7.5 file format
+#' into \code{\link[MALDIquant]{MassSpectrum-class}} objects.
+#'
+#' @param path \code{character}, path to directory or file which should be read
+#'  in.
+#' @param \ldots arguments to be passed to
+#' \code{\link[MALDIquantForeign]{import}}.
+#'
+#' @return a \code{list} of \code{\link[MALDIquant]{MassSpectrum-class}}
+#'  objects.
+#' @seealso
+#' \code{\link[MALDIquant]{MassSpectrum-class}}
+#' @author Sebastian Gibb
+#' @references \url{http://strimmerlab.org/software/maldiquant/} \cr
+#'  \url{http://www.grahamwideman.com/gw/brain/analyze/formatdoc.htm},
+#'  \url{http://eeg.sourceforge.net/ANALYZE75.pdf}
+#' @rdname importAnalyze-functions
+#' @export
+importAnalyze <- function(path, ...) {
+  return(import(path=path, type="analyze", ...))
 }
 

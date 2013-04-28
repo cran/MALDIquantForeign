@@ -2,8 +2,8 @@
 \alias{import}
 \title{Import files}
 \usage{
-  import(path, type = "auto", pattern, verbose = FALSE,
-    ...)
+  import(path, type = "auto", pattern,
+    removeEmptySpectra = TRUE, verbose = TRUE, ...)
 }
 \arguments{
   \item{path}{\code{character}, path to directory or file
@@ -18,6 +18,9 @@
 
   \item{pattern}{\code{character}, a regular expression to
   find files in a directory (see details).}
+
+  \item{removeEmptySpectra}{\code{logical}, should empty
+  spectra excluded?}
 
   \item{verbose}{\code{logical}, verbose output?}
 
@@ -43,7 +46,9 @@
   \code{\link[MALDIquantForeign]{importCiphergenXml}} \cr
   mzXML \tab \code{\link[MALDIquantForeign]{importMzXml}}
   \cr mzML \tab \code{\link[MALDIquantForeign]{importMzMl}}
-  \cr }
+  \cr imzML \tab
+  \code{\link[MALDIquantForeign]{importImzMl}} \cr analyze
+  \tab \code{\link[MALDIquantForeign]{importAnalyze}} \cr }
 
   \code{path}: In addition to the above mentioned file
   types the following (compressed) archives are supported,

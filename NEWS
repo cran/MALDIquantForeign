@@ -1,6 +1,13 @@
 RELEASE HISTORY OF THE "MALDIquantForeign" PACKAGE
 ==================================================
 
+Version 0.4 [2013-04-28]:
+- Add basic import support for imzML files and Analyze 7.5 files.
+- import: add removeEmptySpectra argument; closes #7.
+- import: change default argument verbose to TRUE.
+- .download: respects "verbose" argument now (fixes #6).
+- Remove LICENSE file.
+
 Version 0.3 [2013-03-01]:
 - Add basic support for mzML export.
 - Add basic import support for Ciphergen XML files.

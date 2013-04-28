@@ -1,4 +1,4 @@
-## Copyright 2012 Sebastian Gibb
+## Copyright 2012-2013 Sebastian Gibb
 ## <mail@sebastiangibb.de>
 ##
 ## This file is part of MALDIquantForeign for R and related languages.
@@ -49,7 +49,7 @@
 #' @return function closure
 #'
 #' @author Sebastian Gibb \email{mail@@sebastiangibb.de}
-#' @references 
+#' @references
 #' Definition of \code{mzML} format:
 #' \url{http://www.psidev.info/mzml_1_0_0}
 #' @rdname mzMlHandlers
@@ -59,27 +59,30 @@
   ## define local variables
 
   ## handle different mzXML versions
-  mzMlVersion <- 0 
+  mzMlVersion <- 0
 
   ## save last opened tag (needed for .text()-processing)
   openTag <- ""
 
   ## store current scan values
-  nSpectra <- 0
-  currentSpectrumId <- 0
-  precision <- 0
-  compressionType <- "none"
-  currentArray <- "mass"
+  nSpectra <- 0L
+  curSpecIdx <- 0L
+  curRefId <- character()
   currentArrayContent <- character()
   fileCheckSum <- character()
 
   ## supported?
   supported <- TRUE
- 
+
   ## build final list
   xml <- list()
   xml$metaData <- list()
   xml$spectra <- list()
+  ## imzML information
+  xml$ims <- list()
+
+  ## reference values
+  references <- new.env(parent=emptyenv())
 
   ## handlers for specific tags
   ## mzML
@@ -92,10 +95,24 @@
     }
   }
 
+  ## mzML/referenceableParamGroupList/referenceableParamGroup
+  referenceableParamGroup <- function(name, attrs) {
+    openTag <<- name
+    curRefId <<- readMzXmlData:::.attributeToString(attrs, "id", required=TRUE)
+  }
+
+  referenceableParamGroupRef <- function(name, attrs) {
+    if (!is.null(references[[attrs["ref"]]])) {
+      xml$spectra[[curSpecIdx]]$metaData <<-
+        modifyList(xml$spectra[[curSpecIdx]]$metaData,
+                   references[[attrs["ref"]]])
+    }
+  }
+
   ## mzML/run/spectrumList
   spectrumList <- function(name, attrs) {
     ## fetch number of spectra
-    nSpectra <<- readMzXmlData:::.attributeToDouble(attrs, "count", 
+    nSpectra <<- readMzXmlData:::.attributeToDouble(attrs, "count",
                                                     required=TRUE)
 
     if (verbose) {
@@ -106,21 +123,30 @@
 
   ## mzML/run/spectrumList/spectrum
   spectrum <- function(name, attrs) {
-    currentSpectrumId <<- currentSpectrumId + 1
+    openTag <- name
+    curSpecIdx <<- curSpecIdx + 1
 
     supported <<- TRUE
 
-    xml$spectra[[currentSpectrumId]] <<- list()
-    xml$spectra[[currentSpectrumId]]$metaData <<- list()
+    xml$spectra[[curSpecIdx]] <<- list()
+    xml$spectra[[curSpecIdx]]$metaData <<- list()
 
-    xml$spectra[[currentSpectrumId]]$metaData[["id"]] <<-
+    xml$spectra[[curSpecIdx]]$metaData[["id"]] <<-
       readMzXmlData:::.attributeToString(attrs, "id", required=TRUE)
 
-    xml$spectra[[currentSpectrumId]]$metaData[["numberInFile"]] <<-
-      currentSpectrumId
+    xml$spectra[[curSpecIdx]]$metaData[["numberInFile"]] <<-
+      curSpecIdx
 
+    ## IMS extension
+    if (length(xml$ims)) {
+      xml$ims$ibd[[curSpecIdx]] <<- matrix(NA, nrow=2, ncol=3,
+                                           dimnames=list(c("mass", "intensity"),
+                                                         c("offset", "length",
+                                                           "encodedLength")))
+      xml$spectra[[curSpecIdx]]$metaData$imaging <<- list()
+    }
     if (verbose) {
-      message("Processing spectrum ", currentSpectrumId, "/", nSpectra,
+      message("Processing spectrum ", curSpecIdx, "/", nSpectra,
               " (id: ", attrs["id"], ") ...")
     }
   }
@@ -132,59 +158,146 @@
 
   ## *cvParam
   cvParam <- function(name, attrs) {
-    ## mzML/run/spectrumList/spectrum - children
-    ## ms level
+    ## polarity
     if (.isAttrSet(attrs, "MS:1000129", "negative scan")) {
-      if (currentSpectrumId == 0) {
-        xml$metaData[["polarity"]] <<- "negative"
-      } else {
-        xml$spectra[[currentSpectrumId]]$metaData[["polarity"]] <<- "negative"
-      }
+      .setCvValue("negative", "polarity")
       return()
     } else if (.isAttrSet(attrs, "MS:1000130", "positive scan")) {
-      if (currentSpectrumId == 0) {
-        xml$metaData[["polarity"]] <<- "positive"
-      } else {
-        xml$spectra[[currentSpectrumId]]$metaData[["polarity"]] <<- "positive"
-      }
+      .setCvValue("positive", "polarity")
       return()
     }
 
+    ## ms level
     if (.isAttrSet(attrs, "MS:1000511",  "ms level")) {
-      xml$spectra[[currentSpectrumId]]$metaData[["msLevel"]] <<-
-        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      .setCvValue(
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE),
+        "msLevel")
       return()
     }
-    
+
+    ## centroid data
     if (.isAttrSet(attrs, "MS:1000127", "centroid spectrum")) {
       warning("centroid data are not supported!")
+      return()
     }
 
-    ## mzML/run/spectrumList/spectrum/binaryDataArrayList/binaryData - children
     ## precision
     if (.isAttrSet(attrs, "MS:1000521", "32-bit float")) {
-      precision <<- 32
+      .setCvValue(32, "precision")
       return()
     } else if (.isAttrSet(attrs, "MS:1000523", "64-bit float")) {
-      precision <<- 64
+      .setCvValue(64, "precision")
       return()
     }
 
     ## compression
     if (.isAttrSet(attrs, "MS:1000576", "no compression")) {
-      compressionType <<- "none"
+      .setCvValue("none", "compressionType")
       return()
     } else if (.isAttrSet(attrs, "MS:1000574", "zlib compression")) {
-      compressionType <<- "gzip"
+      .setCvValue("gzip", "compressionType")
       return()
     }
 
     ## data arrays
     if (.isAttrSet(attrs, "MS:1000514", "m/z array")) {
-      currentArray <<- "mass"
+      .setCvValue("mass", "currentArray")
       return()
     } else if (.isAttrSet(attrs, "MS:1000515", "intensity array")) {
-      currentArray <<- "intensity"
+      .setCvValue("intensity", "currentArray")
+      return()
+    }
+
+    ## IMS extensions
+    if (.isAttrSet(attrs, "IMS:1000080", "universally unique identifier")) {
+      xml$ims$uuid <<-
+        gsub(pattern="[[:punct:]]", replacement="",
+             x=readMzXmlData:::.attributeToString(attrs, "value",
+                                                  required=TRUE))
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000091", "ibd SHA-1")) {
+      xml$ims$sha1 <<-
+        readMzXmlData:::.attributeToString(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000030", "continuous")) {
+      xml$ims$type <<- "continuous"
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000032", "processed")) {
+      xml$ims$type <<- "processed"
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000042", "max count of pixel x")) {
+      xml$metaData$imaging$size["x"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000043", "max count of pixel y")) {
+      xml$metaData$imaging$size["y"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000044", "max dimension x")) {
+      xml$metaData$imaging$dim["x"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000045", "max dimension y")) {
+      xml$metaData$imaging$dim["y"]<<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000046", "pixel size x")) {
+      xml$metaData$imaging$pixelSize["x"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000047", "pixel size y")) {
+      xml$metaData$imaging$pixelSize["y"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000050", "position x")) {
+      xml$spectra[[curSpecIdx]]$metaData$imaging$pos["x"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000051", "position y")) {
+      xml$spectra[[curSpecIdx]]$metaData$imaging$pos["y"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000102", "external offset")) {
+      xml$ims$ibd[[curSpecIdx]][xml$spectra[[curSpecIdx]]$metaData$currentArray,
+                                "offset"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+
+    if (.isAttrSet(attrs, "IMS:1000103", "external array length")) {
+      xml$ims$ibd[[curSpecIdx]][xml$spectra[[curSpecIdx]]$metaData$currentArray,
+                                "length"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
+      return()
+    }
+    if (.isAttrSet(attrs, "IMS:1000104", "external encoded length")) {
+      xml$ims$ibd[[curSpecIdx]][xml$spectra[[curSpecIdx]]$metaData$currentArray,
+                                "encodedLength"] <<-
+        readMzXmlData:::.attributeToDouble(attrs, "value", required=TRUE)
       return()
     }
   }
@@ -193,7 +306,7 @@
   .startElement <- function(name, attrs) {
     openTag <<- name
   }
-  
+
   .endElement <- function(name, attrs) {
     if (name == "binary" && supported) {
       .decodeArray()
@@ -219,21 +332,37 @@
     return(attrs["accession"] == id || attrs["name"] == name)
   }
 
+  .setCvValue <- function(x, name) {
+    if (openTag == "referenceableParamGroup") {
+      if (is.null(references[[curRefId]])) {
+        references[[curRefId]] <<- list()
+      }
+
+      references[[curRefId]][[name]] <<- x
+    } else if (openTag == "spectrum" || openTag == "binaryDataArray") {
+      xml$spectra[[curSpecIdx]]$metaData[[name]] <<- x
+    } else {
+      xml$metaData[[name]] <<- x
+    }
+  }
+
   .decodeArray <- function() {
-    if (nchar(currentArrayContent) <= 0) {
-      return()
+    if (length(currentArrayContent)) {
+      ## read base64 encoded array content (endian must be "little")
+      content <- readMzXmlData:::.base64decode(x=currentArrayContent,
+        endian="little", size=round(xml$spectra[[curSpecIdx]]$metaData$precision/8),
+        compressionType=xml$spectra[[curSpecIdx]]$metaData$compressionType)
+
+      xml$spectra[[curSpecIdx]][[xml$spectra[[curSpecIdx]]$metaData$currentArray]] <<-
+        content
+
+      ## clear array content
+      currentArrayContent <<- character()
     }
 
-    ## read base64 encoded array content (endian must be "little")
-    content <- readMzXmlData:::.base64decode(x=currentArrayContent,
-                                             endian="little",
-                                             size=round(precision/8),
-                                             compressionType=compressionType)
-
-    ## clear array content
-    currentArrayContent <<- character()
-
-    xml$spectra[[currentSpectrumId]][[currentArray]] <<- content
+    ## clear metaData
+    xml$spectra[[curSpecIdx]]$metaData[c("precision", "compressionType",
+                                         "currentArray")] <<- NULL
   }
 
   .calculateFileChecksum <- function() {
@@ -253,13 +382,14 @@
     checkSumPos <- readMzXmlData:::.revfregexpr("<fileChecksum>", fileName) + 14
 
     if (verbose) {
-      cat("Calculating sha1-sum for ", sQuote(fileName), ": ", sep="")
+      message("Calculating sha1-sum for ", sQuote(fileName), ": ",
+              appendLF=FALSE)
     }
-    
+
     sha1Calc <- digest::digest(fileName, algo="sha1", file=TRUE,
                                length=checkSumPos-1)
     if (verbose) {
-      cat(sha1Calc, "\n")
+      message(sha1Calc)
     }
 
     if (fileCheckSum != sha1Calc) {
@@ -272,6 +402,8 @@
   ## return statement (please call getData())
   return(list(getData=function() {return(xml)},
               mzML=mzML,
+              referenceableParamGroup=referenceableParamGroup,
+              referenceableParamGroupRef=referenceableParamGroupRef,
               spectrumList=spectrumList,
               spectrum=spectrum,
               chromatogram=chromatogram,
