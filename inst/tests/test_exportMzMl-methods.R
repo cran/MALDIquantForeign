@@ -23,8 +23,8 @@ mzML <- c(
 "  </sourceFileList>",
 " </fileDescription>",
 " <softwareList count=\"1\">",
-paste("  <software id=\"MALDIquantForeign\" version=\"",
-      packageVersion("MALDIquantForeign"), "\"/>", sep=""),
+paste0("  <software id=\"MALDIquantForeign\" version=\"",
+       packageVersion("MALDIquantForeign"), "\"/>"),
 " </softwareList>",
 " <instrumentConfigurationList count=\"1\">",
 "  <instrumentConfiguration id=\"IC0\"/>",
@@ -43,7 +43,7 @@ paste("  <software id=\"MALDIquantForeign\" version=\"",
 "    <cvParam cvRef=\"MS\" accession=\"MS:1000294\" name=\"mass spectrum\"/>",
 "    <cvParam cvRef=\"MS\" accession=\"MS:1000528\" name=\"lowest observed m/z\" value=\"1\" unitCvRef=\"MS\" unitAccession=\"MS:1000040\" unitName=\"m/z\"/>",
 "    <cvParam cvRef=\"MS\" accession=\"MS:1000527\" name=\"highest observed m/z\" value=\"5\" unitCvRef=\"MS\" unitAccession=\"MS:1000040\" unitName=\"m/z\"/>",
-"    <cvParam cvRef=\"MS\" accession=\"MS:1000285\" name=\"total ion current\" value=\"40\"/>",
+"    <cvParam cvRef=\"MS\" accession=\"MS:1000285\" name=\"total ion current\" value=\"32\"/>",
 "    <cvParam cvRef=\"MS\" accession=\"MS:1000128\" name=\"profile spectrum\"/>",
 "    <binaryDataArrayList count=\"2\">",
 "     <binaryDataArray encodedLength=\"36\">",
@@ -68,6 +68,7 @@ test_that("exportMzMl", {
   tmp <- tempdir()
   MALDIquantForeign:::.exportMzMl(m, file=file.path(tmp, "tmp.mzML"))
   expect_equal(readLines(file.path(tmp, "tmp.mzML")), mzML)
+  g <- readLines(file.path(tmp, "tmp.mzML"))
 })
 
 test_that("exportMzMl,list", {

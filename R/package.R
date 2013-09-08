@@ -23,8 +23,8 @@
 #'
 #' \tabular{ll}{
 #' Package: \tab MALDIquantForeign \cr
-#' Version: \tab 0.4\cr
-#' Date: \tab 2013-04-28\cr
+#' Version: \tab 0.5\cr
+#' Date: \tab 2013-09-08\cr
 #' License: \tab GPL (>= 3)\cr
 #' URL: \tab http://strimmerlab.org/software/maldiquant/\cr
 #' }
@@ -37,6 +37,7 @@
 #'
 #' @import MALDIquant
 #' @import readMzXmlData
+#' @import methods
 #' @importFrom base64enc base64encode
 #' @importFrom digest digest
 #' @importFrom downloader download
