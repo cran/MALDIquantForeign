@@ -1,6 +1,6 @@
 Package: MALDIquantForeign
-Version: 0.5
-Date: 2013-09-08
+Version: 0.5.1
+Date: 2013-09-18
 Title: Import/Export routines for MALDIquant
 Authors@R: c(person("Sebastian", "Gibb", role=c("aut", "cre"),
     email="mail@sebastiangibb.de"))
@@ -29,9 +29,9 @@ Collate: 'package.R' 'AllGenerics.R' 'base64encode-functions.R'
         'compression-functions.R' 'download-function.R'
         'importImzMl-functions.R' 'analyze-functions.R'
         'importAnalyze-functions.R'
-Packaged: 2013-09-08 12:41:35 UTC; sebastian
+Packaged: 2013-09-18 16:50:16 UTC; sebastian
 Author: Sebastian Gibb [aut, cre]
 Maintainer: Sebastian Gibb <mail@sebastiangibb.de>
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-09-08 14:51:12
+Date/Publication: 2013-09-18 19:55:07
