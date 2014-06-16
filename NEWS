@@ -2,6 +2,35 @@ RELEASE HISTORY OF THE "MALDIquantForeign" PACKAGE
 ==================================================
 
 
+CHANGES IN MALDIquantForeign VERSION 0.8 [2014-06-16]:
+------------------------------------------------------
+
+MODIFICATIONS
+
+* `import`: set argument `centroided=FALSE` as default (was `NA` before). The
+  automatically determination of profile/centroided data was too error prone.
+  Now we read everything as profile data (use `centroided=TRUE` to read
+  centroided data);
+  affected functions: all `import` functions (e.g. `importBrukerFlex`,
+  `importMzMl` ...).
+
+IMPROVEMENTS
+
+* `importAnalyze`: circumvent the limit of 32747 intensity values that is
+  specified in the official Analyze 7.5 format.
+  Thanks to Ken Frankel <kafrankel@gmail.com> for reporting this problem.
+
+INTERNAL CHANGES
+
+* Fix VignetteIndexEntry.
+* Rename vignette output file from MALDIquantForeign.pdf to
+  MALDIquantForeign-intro.pdf.
+* Check availability of the "RNetCDF" package in the `importCdf` man page to
+  avoid build failures on CRAN.
+* Don't evaluate the remote import example in the vignette to avoid build
+  failures on CRAN.
+
+
 CHANGES IN MALDIquantForeign VERSION 0.7 [2014-04-11]:
 ------------------------------------------------------
 
