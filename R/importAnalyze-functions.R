@@ -16,13 +16,10 @@
 ## You should have received a copy of the GNU General Public License
 ## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
 
-#' @keywords internal
-
 .importAnalyze <- function(file, centroided=FALSE, massRange=c(0, Inf),
                            minIntensity=0, verbose=FALSE) {
-  baseFilename <- .withoutFileExtension(file)
   header <- .readAnalyzeHdr(file, verbose=verbose)
-  mass <- .readAnalyzeMass(paste(baseFilename, "t2m", sep="."),
+  mass <- .readAnalyzeMass(.changeFileExtension(file, "t2m"),
                            header=header,
                            verbose=verbose)
 
@@ -31,7 +28,7 @@
   skip <- c(massIdx[1]-1, length(mass)-massIdx[length(massIdx)])
   mass <- mass[massIdx]
 
-  intensity <- .readAnalyzeIntensity(paste(baseFilename, "img", sep="."),
+  intensity <- .readAnalyzeIntensity(.changeFileExtension(file, "img"),
                                      header=header,
                                      ni=length(mass),
                                      skip=skip,
@@ -42,15 +39,14 @@
   for (x in 1:header$nx) {
     for (y in 1:header$ny) {
       l[[(x-1)*header$ny+y]] <-
-        .createMassObject(data=list(mass=mass, intensity=intensity[, x, y]),
+        .createMassObject(mass=mass, intensity=intensity[, x, y],
                           metaData=list(file=file,
-                                         imaging=list(pos=c(x=x, y=y),
-                                                      pixelSize=c(x=header$xd,
+                                        imaging=list(pos=c(x=x, y=y),
+                                                     pixelSize=c(x=header$xd,
                                                                   y=header$yd))),
                           centroided=centroided, massRange=massRange,
                           minIntensity=minIntensity, verbose=verbose)
     }
   }
-  return(l)
+  l
 }
-

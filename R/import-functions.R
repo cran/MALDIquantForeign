@@ -1,4 +1,4 @@
-## Copyright 2012-2014 Sebastian Gibb
+## Copyright 2012-2015 Sebastian Gibb
 ## <mail@sebastiangibb.de>
 ##
 ## This file is part of MALDIquantForeign for R and related languages.
@@ -35,6 +35,7 @@
 #'  imzML \tab \code{\link[MALDIquantForeign]{importImzMl}} \cr
 #'  analyze \tab \code{\link[MALDIquantForeign]{importAnalyze}} \cr
 #'  cdf \tab \code{\link[MALDIquantForeign]{importCdf}} \cr
+#'  msd \tab \code{\link[MALDIquantForeign]{importMsd}} \cr
 #' }
 #'
 #' \code{path}: In addition to the above mentioned file types the
@@ -74,6 +75,9 @@
 #' @param massRange \code{double}, limits of mass import (left/minimal mass,
 #' right/maximal mass).
 #' @param minIntensity \code{double}, minimal intensity to import.
+#' @param mc.cores number of cores to use (default 1; only unix-based platforms
+#' are supported, see
+#' \code{\link[MALDIquantForeign]{MALDIquantForeign-parallel}} for details).
 #' @param verbose \code{logical}, verbose output?
 #' @param \ldots arguments to be passed to specific import functions.
 #'
@@ -83,6 +87,7 @@
 #' @seealso
 #' \code{\link[MALDIquant]{MassSpectrum-class}},
 #' \code{\link[MALDIquant]{MassPeaks-class}}
+#' \code{\link[MALDIquantForeign]{MALDIquantForeign-parallel}}
 #' @author Sebastian Gibb
 #' @references \url{http://strimmerlab.org/software/maldiquant/}
 #' @examples
@@ -109,7 +114,7 @@
 #' @export
 import <- function(path, type="auto", pattern, excludePattern=NULL,
                    removeEmptySpectra=TRUE, centroided=FALSE, massRange=c(0, Inf),
-                   minIntensity=0, verbose=TRUE, ...) {
+                   minIntensity=0, mc.cores=1L, verbose=interactive(), ...) {
 
   ## download file if needed
   isUrl <- .isUrl(path)
@@ -154,11 +159,14 @@ import <- function(path, type="auto", pattern, excludePattern=NULL,
     if (missing(pattern)) {
       pattern <- importFormats$pattern[i]
     }
-    handler <- importFormats$handler[i]
-    s <- unlist(lapply(.files(path=path, pattern=pattern,
-                              excludePattern=excludePattern),
-                       handler, centroided=centroided, massRange=massRange,
-                       minIntensity=minIntensity, verbose=verbose, ...))
+    handler <- get(importFormats$handler[i], mode="function")
+    s <- unlist(MALDIquant:::.lapply(.files(path=path, pattern=pattern,
+                                            excludePattern=excludePattern),
+                                     handler, centroided=centroided,
+                                     massRange=massRange,
+                                     minIntensity=minIntensity,
+                                     mc.cores=mc.cores,
+                                     verbose=verbose, ...))
     if (is.null(s)) {
       stop("Import failed! Unsupported file type?")
     }
@@ -167,9 +175,7 @@ import <- function(path, type="auto", pattern, excludePattern=NULL,
       emptyIdx <- MALDIquant::findEmptyMassObjects(s)
 
       if (length(emptyIdx)) {
-        if (verbose) {
-          message("Remove ", length(emptyIdx), " empty spectra.")
-        }
+        .msg(verbose, "Remove ", length(emptyIdx), " empty spectra.")
         return(s[-emptyIdx])
       }
     }
@@ -353,6 +359,9 @@ importMzMl <- function(path, ...) {
 #'
 #' @param path \code{character}, path to directory or file which should be read
 #'  in.
+#' @param coordinates \code{matrix}, 2 column matrix that contains the x- and
+#'  y-coordinates for spectra that should be imported. Other spectra would be
+#'  ignored.
 #' @param \ldots arguments to be passed to
 #' \code{\link[MALDIquantForeign]{import}}.
 #'
@@ -375,12 +384,16 @@ importMzMl <- function(path, ...) {
 #' exampleDirectory <- system.file("exampledata", package="MALDIquantForeign")
 #'
 #' ## import
-#' s <- importImzMl(exampleDirectory)
+#' s <- importImzMl(file.path(exampleDirectory, "tiny_continuous.imzML"))
+#'
+#' ## import only spectra for pixel 1,1 and 2,1
+#' s <- importImzMl(file.path(exampleDirectory, "tiny_continuous.imzML"),
+#'                  coordinates = cbind(1:2, c(1, 1)))
 #'
 #' @rdname importImzMl-functions
 #' @export
-importImzMl <- function(path, ...) {
-  return(import(path=path, type="imzml", ...))
+importImzMl <- function(path, coordinates=NULL, ...) {
+  return(import(path=path, type="imzml", coordinates=coordinates, ...))
 }
 
 #' Import Ciphergen XML files
@@ -475,7 +488,7 @@ importAnalyze <- function(path, ...) {
 #' exampleDirectory <- system.file("exampledata", package="MALDIquantForeign")
 #'
 #' ## import
-#' if (require("RNetCDF")) {
+#' if (requireNamespace("RNetCDF", quietly=TRUE)) {
 #'   s <- importCdf(exampleDirectory)
 #' } else {
 #'   message("You have to install the RNetCDF package to use importCdf.")
@@ -487,3 +500,39 @@ importCdf <- function(path, ...) {
   return(import(path=path, type="cdf", ...))
 }
 
+#' Import MSD files
+#'
+#' This function imports files in mMass MSD file format
+#' into \code{\link[MALDIquant]{MassSpectrum-class}} or
+#' \code{\link[MALDIquant]{MassPeaks-class}} objects.
+#'
+#' @param path \code{character}, path to directory or file which should be read
+#'  in.
+#' @param \ldots arguments to be passed to
+#' \code{\link[MALDIquantForeign]{import}}.
+#'
+#' @return a \code{list} of \code{\link[MALDIquant]{MassSpectrum-class}} or
+#' \code{\link[MALDIquant]{MassPeaks-class}} objects (depending on the
+#' \code{centroided} argument).
+#' @seealso
+#' \code{\link[MALDIquant]{MassSpectrum-class}},
+#' \code{\link[MALDIquant]{MassPeaks-class}}
+#' @author Sebastian Gibb
+#' @references \url{http://strimmerlab.org/software/maldiquant/}, \cr
+#' mMass homepage: \url{http://mmass.org/}
+#' @examples
+#'
+#' library("MALDIquant")
+#' library("MALDIquantForeign")
+#'
+#' ## get example directory
+#' exampleDirectory <- system.file("exampledata", package="MALDIquantForeign")
+#'
+#' ## import
+#' s <- importMsd(exampleDirectory)
+#'
+#' @rdname importMsd-functions
+#' @export
+importMsd <- function(path, ...) {
+  return(import(path=path, type="msd", ...))
+}

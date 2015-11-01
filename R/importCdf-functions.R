@@ -19,12 +19,13 @@
 #' @author Pietro Franceschi \email{pietro.franceschi@@fmach.it}, Sebastian Gibb
 #' \email{mail@@sebastiangibb.de}
 #' @keywords internal
+#' @noRd
 
 ## original code written by Pietro Franceschi
 ## modified for MALDIquantForeign by Sebastian Gibb
 .importCdf <- function(file, centroided=FALSE, massRange=c(0, Inf),
                           minIntensity=0, verbose=FALSE) {
-  if (!require("RNetCDF")) {
+  if (!requireNamespace("RNetCDF", quietly=TRUE)) {
         stop("For netCDF support the ", sQuote("RNetCDF"),
              " package is needed. \n",
              "Please install ", sQuote("RNetCDF"),
@@ -49,7 +50,7 @@
     intensity <- as.double(RNetCDF::var.get.nc(nc, variable="intensity_values",
                                                start=scanIndex[i]+1L,
                                                count=scanLength[i]))
-    l[[i]] <- .createMassObject(data=list(mass=mass, intensity=intensity),
+    l[[i]] <- .createMassObject(mass=mass, intensity=intensity,
                                 metaData=list(file=file,
                                               number=i,
                                               retentionTime=retentionTime[i],
@@ -57,7 +58,5 @@
                                 centroided=centroided, massRange=massRange,
                                 minIntensity=minIntensity, verbose=verbose)
   }
-
-  return(l)
+  l
 }
-

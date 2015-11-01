@@ -26,15 +26,14 @@
 #' @return Returns a list with metadata and spectra.
 #'
 #' @author Sebastian Gibb \email{mail@@sebastiangibb.de}
-#' @rdname parseMzMl
 #' @keywords internal
-#'
+#' @noRd
 .parseMzMl <- function(file, verbose=FALSE, ...) {
-  return(XML::xmlEventParse(file=file,
-                            handlers=.mzMlHandlers(fileName=file,
-                                                   verbose=verbose),
-                            addContext=FALSE, useTagName=TRUE, useDotNames=TRUE,
-                            ...)$getData())
+  XML::xmlEventParse(file=file,
+                     handlers=.mzMlHandlers(fileName=file,
+                                            verbose=verbose),
+                     addContext=FALSE, useTagName=TRUE, useDotNames=TRUE,
+                     ...)$getData()
 }
 
 #' Parse mzML files.
@@ -52,9 +51,8 @@
 #' @references
 #' Definition of \code{mzML} format:
 #' \url{http://www.psidev.info/mzml_1_0_0}
-#' @rdname mzMlHandlers
 #' @keywords internal
-#'
+#' @noRd
 .mzMlHandlers <- function(fileName, verbose=FALSE) {
   ## define local variables
 
@@ -90,9 +88,7 @@
     ## fetch version information
     mzMlVersion <<- readMzXmlData:::.grepDouble(attrs["xsi:schemaLocation"])
 
-    if (verbose) {
-      message("Found mzML document (version: ", mzMlVersion, ").")
-    }
+    .msg(verbose, "Found mzML document (version: ", mzMlVersion, ").")
   }
 
   ## mzML/referenceableParamGroupList/referenceableParamGroup
@@ -115,10 +111,8 @@
     nSpectra <<- readMzXmlData:::.attributeToDouble(attrs, "count",
                                                     required=TRUE)
 
-    if (verbose) {
-      message("Found ", nSpectra, " ",
-              ifelse(nSpectra == 1, "spectrum", "spectra"), ".")
-    }
+    .msg(verbose, "Found ", nSpectra, " ",
+         ifelse(nSpectra == 1, "spectrum", "spectra"), ".")
   }
 
   ## mzML/run/spectrumList/spectrum
@@ -145,10 +139,8 @@
                                                            "encodedLength")))
       xml$spectra[[curSpecIdx]]$metaData$imaging <<- list()
     }
-    if (verbose) {
-      message("Processing spectrum ", curSpecIdx, "/", nSpectra,
-              " (id: ", attrs["id"], ") ...")
-    }
+    .msg(verbose, "Processing spectrum ", curSpecIdx, "/", nSpectra,
+        " (id: ", attrs["id"], ") ...")
   }
 
   chromatogram <- function(name, attrs) {
@@ -237,7 +229,7 @@
       return()
     }
 
-    if (.isAttrSet(attrs, "IMS:1000032", "processed")) {
+    if (.isAttrSet(attrs, "IMS:1000031", "processed")) {
       xml$ims$type <<- "processed"
       return()
     }
@@ -383,9 +375,7 @@
 
     ## sha1 sum for this file (from the beginning of the file up to (and
     ## including) the opening tag <fileChecksum>
-    if (verbose) {
-      message("Look for '<fileChecksum>' position ...")
-    }
+    .msg(verbose, "Look for '<fileChecksum>' position ...")
 
     ## 14 == nchar("<fileChecksum>")
     checkSumPos <- readMzXmlData:::.revfregexpr("<fileChecksum>", fileName) + 14

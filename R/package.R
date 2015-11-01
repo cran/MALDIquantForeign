@@ -1,4 +1,4 @@
-## Copyright 2012-2013 Sebastian Gibb
+## Copyright 2012-2015 Sebastian Gibb
 ## <mail@sebastiangibb.de>
 ##
 ## This file is part of MALDIquantForeign for R and related languages.
@@ -38,9 +38,10 @@
 #' @import methods
 #' @importFrom base64enc base64encode
 #' @importFrom digest digest
-#' @importFrom downloader download
 #' @importFrom readBrukerFlexData readBrukerFlexFile
+#' @importFrom stats na.omit runif
+#' @importFrom utils download.file modifyList packageVersion read.table tail
+#' type.convert write.table untar unzip
 #' @importFrom XML xmlEventParse xmlParse xmlValue xpathApply xpathSApply
 #'
 NULL
-

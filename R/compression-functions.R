@@ -16,29 +16,19 @@
 ## You should have received a copy of the GNU General Public License
 ## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
 
-#' @keywords internal
 .isCompressed <- function(x) {
   z <- c("bz2", "bzip2", "gz", "lzma", "xz")
-  return(.fileExtension(x) %in%
-         c("zip", z, paste("tar", z, sep=".")))
+  .fileExtension(x) %in% c("zip", z, paste("tar", z, sep="."))
 }
 
-#' @keywords internal
-.isTar <- function(x) {
-  return(grepl(pattern="^tar", x=.fileExtension(x)))
-}
+.isTar <- function(x)grepl(pattern="^tar", x=.fileExtension(x))
 
-#' @keywords internal
-.isZip <- function(x) {
-  return(grepl(pattern="^zip$", x=.fileExtension(x)))
-}
+.isZip <- function(x)grepl(pattern="^zip$", x=.fileExtension(x))
 
-#' @keywords internal
 .isPackedOrCompressed <- function(x) {
-  return(.isCompressed(x) | .isTar(x))
+  .isCompressed(x) | .isTar(x)
 }
 
-#' @keywords internal
 # unpack/uncompress files and return temporary filenames
 .uncompress <- function(x, verbose=TRUE) {
   f <- lapply(x, function(path) {
@@ -54,10 +44,9 @@
       }
     }
   })
-  return(unlist(f))
+  unlist(f)
 }
 
-#' @keywords internal
 # unpack and return tmp filename
 .unpacking <- function(filename, destdir, fun, verbose=FALSE, ...) {
   if (missing(destdir)) {
@@ -69,19 +58,15 @@
   funName <- deparse(substitute(fun))
   fun <- as.function(fun)
 
-  if (verbose) {
-    message(funName, " ", filename, " to ", destdir, ".")
-  }
+  .msg(verbose, funName, " ", filename, " to ", destdir, ".")
 
   unpacked <- fun(filename, exdir=destdir, ...)
-  if (length(unpacked)) {
-    return(destdir)
-  } else {
+  if (!length(unpacked)) {
     stop(funName, " failed!")
   }
+  destdir
 }
 
-#' @keywords internal
 # gunzip and return tmp filename
 .gunzip <- function(filename, destfile, verbose=FALSE) {
   if (!file.exists(filename)) {
@@ -100,9 +85,7 @@
     destfile <- tempfile(pattern=pattern, tmpdir=tmpdir, fileext=fileext)
   }
 
-  if (verbose) {
-    message("gunzip ", filename, " to ", destfile, ".")
-  }
+  .msg(verbose, "gunzip ", filename, " to ", destfile, ".")
 
   fi <- gzfile(filename, open="rb")
   on.exit(close(fi))
@@ -120,11 +103,9 @@
     }
   }
 
-  return(destfile)
+  destfile
 }
 
-#' @keywords internal
 .cleanupUncompressedTmpFiles <- function() {
   unlink(file.path(tempdir(), "MALDIquantForeign_uncompress"), recursive=TRUE)
 }
-

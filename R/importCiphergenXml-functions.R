@@ -16,13 +16,10 @@
 ## You should have received a copy of the GNU General Public License
 ## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
 
-#' @keywords internal
 .importCiphergenXml <- function(file, centroided=FALSE, massRange=c(0, Inf),
                                 minIntensity=0, verbose=FALSE) {
 
-  if (verbose) {
-    message("Reading spectrum from ", sQuote(file), " ...")
-  }
+  .msg(verbose, "Reading spectrum from ", sQuote(file), " ...")
 
   if (!file.exists(file)) {
     stop("File ", sQuote(file), " doesn't exists!")
@@ -31,8 +28,8 @@
   ## read file
   s <- .parseCiphergenXml(file=file)
 
-  return(list(.createMassObject(data=s$spectrum, metaData=s$metaData,
-                                centroided=centroided, massRange=massRange,
-                                minIntensity=minIntensity, verbose=verbose)))
+  list(.createMassObject(mass=s$spectrum$mass, intensity=s$spectrum$intensity,
+                         metaData=s$metaData, centroided=centroided,
+                         massRange=massRange, minIntensity=minIntensity,
+                         verbose=verbose))
 }
-

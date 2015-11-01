@@ -16,12 +16,8 @@
 ## You should have received a copy of the GNU General Public License
 ## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
 
-#' @keywords internal
-.isUrl <- function(x) {
-  return(grepl(pattern="^https?://|^ftp://", x=x))
-}
+.isUrl <- function(x)grepl(pattern="^https?://|^ftp://", x=x)
 
-#' @keywords internal
 .download <- function(url, destfile, verbose=FALSE, ...) {
   if (missing(destfile)) {
     pattern <- paste0(.withoutFileExtension(basename(url)), "_")
@@ -36,23 +32,19 @@
                                            fileext=fileext))
   }
 
-  if (verbose) {
-    message("Downloading ", url , " to ", destfile, ".")
-  }
+  .msg(verbose, "Downloading ", paste0(url, collapse=", ") , " to ",
+       paste0(destfile, collapse=", "), ".")
 
   for (i in seq(along=url)) {
-    r <- downloader::download(url=url[i], destfile=destfile[i], quiet=!verbose,
-                              mode="wb", ...)
-    if (r != 0) {
+    if (download.file(url=url[i], destfile=destfile[i], quiet=!verbose,
+                      mode="wb", ...)) {
       warning("Download of ", url[i], " failed!")
     }
   }
 
-  return(destfile)
+  destfile
 }
 
-#' @keywords internal
 .cleanupDownloadedTmpFiles <- function() {
   unlink(file.path(tempdir(), "MALDIquantForeign_download"), recursive=TRUE)
 }
-

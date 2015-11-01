@@ -16,20 +16,15 @@
 ## You should have received a copy of the GNU General Public License
 ## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
 
-#' @keywords internal
-.testChecksum <- function(file, target, algo="sda1", ..., verbose=FALSE) {
+.testChecksum <- function(file, target, algo="sha1", ..., verbose=FALSE) {
 
-  if (verbose) {
-    message("Calculating ", algo, "-sum for ", sQuote(file), ": ",
-            appendLF=FALSE)
-  }
+  .msg(verbose, "Calculating ", algo, "-sum for ", sQuote(file), ": ",
+       appendLF=FALSE)
 
   fileChecksum <- tolower(digest::digest(file, algo=algo, file=TRUE, ...))
   target <- tolower(target)
 
-  if (verbose) {
-    message(fileChecksum)
-  }
+  .msg(verbose, fileChecksum)
 
   if (fileChecksum != target) {
     warning("Stored and calculated ", algo, " sums do not match ",
@@ -40,4 +35,3 @@
 
   return(TRUE)
 }
-
