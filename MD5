@@ -1,6 +1,6 @@
-759e4f365a2e4eb8873dd5ec3854f1fa *DESCRIPTION
+57129369c3eceae00c8ebaf6488e2c5a *DESCRIPTION
 239f2ca23dfb8e6e1c412d77e5fef820 *NAMESPACE
-7e0651d77ecb4004023d6ddb53f6c9bc *NEWS
+24882c2b22392b04f7a44a8625156956 *NEWS
 1a7732f3a9b780b00941aca4a1b4c089 *R/AllGenerics.R
 b09f7c3504a3dd158913ce0eda3d1085 *R/MALDIquantForeign-parallel.R
 5de22a3830c2835b77386c3e075472a5 *R/analyze-functions.R
@@ -15,7 +15,7 @@ a565443380a217c932f8e6ed778f1449 *R/exportMsd-methods.R
 263ffe0dc55509e70e46dc1427a308b1 *R/exportMzMl-methods.R
 ecfcf756e38f25fa2621f612ca25b84a *R/exportTab-methods.R
 c78a3559e9ec87598fd7d6a7a8ddb53a *R/fileFormats.R
-71f2cefaad4fcb88d6b136dad6c6bf6d *R/filename-functions.R
+5df96127fe7c883d20f2d8116aca4e24 *R/filename-functions.R
 62643bebde1acd81fab75bdc3bda857a *R/filename-methods.R
 835269077b9e05e808e49a4c2b12c7e4 *R/ibd-functions.R
 e5d288e6ded053a3a1dbfde848cdd61e *R/import-functions.R
@@ -29,7 +29,7 @@ f226ec871d20f4a54df5fab07163b234 *R/importMsd-functions.R
 0880b48b4392bf8adadddcc5315252cc *R/importMzMl-functions.R
 247d4c41523ecd95c18f0d9d544ba843 *R/importMzXml-functions.R
 b47f5e01c2d80d4c5426a7fdb6923b49 *R/importTab-functions.R
-6d0a6289f96a249f6890db871f7feaab *R/imzMl-functions.R
+35c92145f354caabe55177ea49a6000b *R/imzMl-functions.R
 eb4a9e6131098dc3ec0a081fad980898 *R/list.files-functions.R
 4bb38e350bb16d36e38e3929821bb9a1 *R/msd-functions.R
 18b7c73ebc1c6e50944830351b4f3778 *R/msg-functions.R
@@ -42,10 +42,10 @@ df013e71a6039700c6956b342cba21f5 *R/parseMzMl.R
 bdbaecef5012d4164a71525922ec9d4f *R/testChecksum-functions.R
 0c2ae5fafc1ae70528f0e5bb02ffac8f *R/uuid-functions.R
 a4b92b6f309e60be3af2363e2066f47c *R/xml-functions.R
-8ea2ff6d03ea2e9b7ec2986b2a198591 *build/vignette.rds
+0a583394ee68e2d618a6d6587c250347 *build/vignette.rds
 9b47d07debb7bc07b22ff5877a5ad37e *inst/doc/MALDIquantForeign-intro.R
 fa3507f704915074f42215d1a7acaf19 *inst/doc/MALDIquantForeign-intro.Rnw
-60a191ee9f663cd7e38dad0c7d3288e3 *inst/doc/MALDIquantForeign-intro.pdf
+0077ce3e25cfd1badf3a181a6afdbd66 *inst/doc/MALDIquantForeign-intro.pdf
 9274dd34d675950326a222a952309a17 *inst/exampledata/ascii.txt
 85077ca13692b5a2469af51d18cffd64 *inst/exampledata/brukerflex/0_A1/1/1SLin/acqu
 fe054ad2e7b98bee673f9ff22d50f00c *inst/exampledata/brukerflex/0_A1/1/1SLin/fid
@@ -95,7 +95,7 @@ f623ff6bf262c955dd9ba2f21852b946 *tests/testthat/test_download-functions.R
 0b42556a51f96c78b0314e4d79ee07a8 *tests/testthat/test_exportMzMl-methods.R
 bc154ef954d4012596f14aeeb9f9d90a *tests/testthat/test_exportTab-methods.R
 c0c445cb3dc0146a53ed5c7cb4326467 *tests/testthat/test_fileFormats.R
-c525ed145225cdca63726e9b8386b4de *tests/testthat/test_filename-functions.R
+4c794d2aa272d40186b93e7d19ab3d25 *tests/testthat/test_filename-functions.R
 2c30aa4314b05352630a6a9a74578475 *tests/testthat/test_ibd-functions.R
 84ac426570d99e3a3e4639013b4ca6b7 *tests/testthat/test_importBrukerFlex-functions.R
 071c254f1a0870eb09163742840ee3eb *tests/testthat/test_importCdf-functions.R
