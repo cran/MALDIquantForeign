@@ -1,6 +1,6 @@
-f3dbeeadf10805c663f83aad0b0f7fc6 *DESCRIPTION
+e0b7080dad9f5f29defdfb27fdcd5055 *DESCRIPTION
 239f2ca23dfb8e6e1c412d77e5fef820 *NAMESPACE
-4adcf8d6dfbd56900c4a1b1077087e29 *NEWS
+20ff5926a3c1d925ca69a81ee184476a *NEWS
 1a7732f3a9b780b00941aca4a1b4c089 *R/AllGenerics.R
 b09f7c3504a3dd158913ce0eda3d1085 *R/MALDIquantForeign-parallel.R
 5de22a3830c2835b77386c3e075472a5 *R/analyze-functions.R
@@ -28,7 +28,7 @@ b5ef5779b408802796def7bb203860cb *R/importCiphergenXml-functions.R
 f226ec871d20f4a54df5fab07163b234 *R/importMsd-functions.R
 0880b48b4392bf8adadddcc5315252cc *R/importMzMl-functions.R
 247d4c41523ecd95c18f0d9d544ba843 *R/importMzXml-functions.R
-b47f5e01c2d80d4c5426a7fdb6923b49 *R/importTab-functions.R
+bdbd2efdd7a00ac4e6ee27dbf27ce003 *R/importTab-functions.R
 35c92145f354caabe55177ea49a6000b *R/imzMl-functions.R
 eb4a9e6131098dc3ec0a081fad980898 *R/list.files-functions.R
 4bb38e350bb16d36e38e3929821bb9a1 *R/msd-functions.R
@@ -37,7 +37,7 @@ c5f02496bba66bc2b952f99a385b3ca5 *R/mzMl-functions.R
 4ce8fb9040f7188714bd3e7d37062eb6 *R/package.R
 57f6c1b0c6fc40ed7f183362ada7a348 *R/parseCiphergenXml.R
 e93bdde9e6e0ca15c875819b73252a4d *R/parseMsd.R
-08afe40e6369f245b59e17f2554306a3 *R/parseMzMl.R
+2530a20477b170608bdc8adf349bd27d *R/parseMzMl.R
 5ff130e9930ea8502c8c7b3e45980a73 *R/sanitize-functions.R
 bdbaecef5012d4164a71525922ec9d4f *R/testChecksum-functions.R
 0c2ae5fafc1ae70528f0e5bb02ffac8f *R/uuid-functions.R
@@ -45,15 +45,15 @@ a4b92b6f309e60be3af2363e2066f47c *R/xml-functions.R
 e2daadfbcdad41b9aab1abf19669c80d *build/vignette.rds
 9b47d07debb7bc07b22ff5877a5ad37e *inst/doc/MALDIquantForeign-intro.R
 fa3507f704915074f42215d1a7acaf19 *inst/doc/MALDIquantForeign-intro.Rnw
-baf81dc6ee147b10cd3fea5801c34f96 *inst/doc/MALDIquantForeign-intro.pdf
+3c596a1a7e4d975ac2a4f2e911bdef16 *inst/doc/MALDIquantForeign-intro.pdf
 9274dd34d675950326a222a952309a17 *inst/exampledata/ascii.txt
 85077ca13692b5a2469af51d18cffd64 *inst/exampledata/brukerflex/0_A1/1/1SLin/acqu
 fe054ad2e7b98bee673f9ff22d50f00c *inst/exampledata/brukerflex/0_A1/1/1SLin/fid
 10e9d68aa23b1d7b85688a969be41897 *inst/exampledata/ciphergen/tiny.xml
-25ca09f543993ec1e4a0c188b514b886 *inst/exampledata/compressed/csv.tar.gz
-5e7f66c3581914b38f2510a5cb81b817 *inst/exampledata/compressed/csv.zip
-84359fbba72d2e02bacaa1acee8a6e9f *inst/exampledata/compressed/csv1.csv.gz
-5101c57f3848a853326e4aac514ee494 *inst/exampledata/csv1.csv
+4b725014b8cacf380e44475b95905d7d *inst/exampledata/compressed/csv.tar.gz
+c449fa2a93410566dba5e145ed09b0ae *inst/exampledata/compressed/csv.zip
+448976240c5d1caccd3d2fe3a8c04e7e *inst/exampledata/compressed/csv1.csv.gz
+4ca88a472371bd1e63d57987c06c4c43 *inst/exampledata/csv1.csv
 4b2a03f6bbe5747bd50273be357533c1 *inst/exampledata/csv2.csv
 90838531af29160ed4d7917edd7dbc4c *inst/exampledata/tiny.cdf
 064e9a9a06250b5a29593ca23c592891 *inst/exampledata/tiny1-centroided.mzML1.1.mzML
@@ -89,7 +89,7 @@ a8d81064418cdcc9ae62dbd937116556 *man/importTab-functions.Rd
 f743796f136a436364c76e6b0f83d474 *tests/testthat.R
 b798ecbef464ea1807946fa217445894 *tests/testthat/test_compression-functions.R
 0857bc348532e96bcfd91f7ae4d0475d *tests/testthat/test_createMassObject-functions.R
-f623ff6bf262c955dd9ba2f21852b946 *tests/testthat/test_download-functions.R
+debeabc712adc81b15966652fc9be840 *tests/testthat/test_download-functions.R
 e0103c88895cf5dc448e881fe14f9cbf *tests/testthat/test_exportImzMl-methods.R
 208ec10c169824675066ec8cb037aa54 *tests/testthat/test_exportMsd-methods.R
 bda24926bda8ba196607439c40bc8a0f *tests/testthat/test_exportMzMl-methods.R
@@ -104,7 +104,7 @@ c0c445cb3dc0146a53ed5c7cb4326467 *tests/testthat/test_fileFormats.R
 688f77adbcefb49f0910338a8fbff29e *tests/testthat/test_importMsd-functions.R
 de7de747a128ba1c30656b7b3d663edd *tests/testthat/test_importMzMl-functions.R
 107cb57fff1e06e1619d810443734b90 *tests/testthat/test_importMzXml-functions.R
-27116abf7060864c5613163e55cbfd1d *tests/testthat/test_importTab-functions.R
+98797d012db45b0dec4176786114e1f7 *tests/testthat/test_importTab-functions.R
 683c710df52b1d3218ba8e708943b15b *tests/testthat/test_list.files-functions.R
 33be42ee6c030ad06a3b25898995fa63 *tests/testthat/test_msg-functions.R
 d84de43b77d9af0f60c8afcf3a06390d *tests/testthat/test_mzMl-functions.R
