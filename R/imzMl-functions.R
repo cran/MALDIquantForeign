@@ -14,7 +14,7 @@
 ## GNU General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
+## along with MALDIquantForeign. If not, see <https://www.gnu.org/licenses/>
 
 .writeImzMlDocument <- function(x, file,
                                 id=.withoutFileExtension(basename(file)),
@@ -22,8 +22,13 @@
                                 coordinates=MALDIquant::coordinates(x),
                                 pixelSize=c(metaData(x[[1L]])$imaging$pixelSize,
                                             100, 100)[1L:2L], ...) {
-  if(isMassSpectrum(x)) {
+  if(isMassSpectrum(x) || isMassPeaks(x)) {
     x <- list(x)
+  }
+
+  if (!MALDIquant:::.isMassObjectList(x)) {
+    stop("Only MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects ",
+         "are supported!")
   }
 
   if (is.null(metaData(x[[1L]])$imaging$pos) && is.null(coordinates)) {
@@ -45,7 +50,7 @@
     x[[1L]]@metaData$imaging <- list(size=size,
                                      dim=dimension,
                                      pixelSize=pixelSize)
-    coordinates(x) <- coordinates
+    MALDIquant::coordinates(x) <- coordinates
   }
 
   ibdFile <- .changeFileExtension(file, "ibd")

@@ -14,7 +14,14 @@
 ## GNU General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
+## along with MALDIquantForeign. If not, see <https://www.gnu.org/licenses/>
+
+setMethod(f=".exportMzMl",
+  signature=signature(x="MassPeaks"),
+  definition=function(x, file, id=.withoutFileExtension(basename(file)), ...) {
+
+  .writeMzMlDocument(x=list(x), file=file, id=id, ...)
+})
 
 setMethod(f=".exportMzMl",
   signature=signature(x="MassSpectrum"),

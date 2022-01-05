@@ -12,8 +12,8 @@
 \S4method{exportMzMl}{list}(x, path, force=FALSE, \ldots)
 }
 \arguments{
-\item{x}{a \code{\link[MALDIquant]{MassSpectrum-class}} object or a
-\code{list} of \code{\link[MALDIquant]{MassSpectrum-class}} objects.}
+\item{x}{a \code{\link[MALDIquant]{AbstractMassObject-class}} object or a
+\code{list} of \code{\link[MALDIquant]{AbstractMassObject-class}} objects.}
 
 \item{file}{\code{character}, file name.}
 
@@ -49,9 +49,9 @@ exportMzMl(s, path="spectra.mzML")
 
 }
 \references{
-\url{http://strimmerlab.org/software/maldiquant/}, \cr
+\url{https://strimmerlab.github.io/software/maldiquant/}, \cr
 HUPO Proteomics Standards Inititative mzML 1.1.0 Specification:
-\url{http://www.psidev.info/mzml}
+\url{https://www.psidev.info/mzML}
 }
 \seealso{
 \code{\link[MALDIquant]{MassSpectrum-class}}

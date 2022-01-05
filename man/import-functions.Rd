@@ -4,10 +4,19 @@
 \alias{import}
 \title{Import files}
 \usage{
-import(path, type = "auto", pattern, excludePattern = NULL,
-  removeEmptySpectra = TRUE, centroided = FALSE, massRange = c(0,
-  Inf), minIntensity = 0, mc.cores = 1L, verbose = interactive(),
-  ...)
+import(
+  path,
+  type = "auto",
+  pattern,
+  excludePattern = NULL,
+  removeEmptySpectra = TRUE,
+  centroided = FALSE,
+  massRange = c(0, Inf),
+  minIntensity = 0,
+  mc.cores = 1L,
+  verbose = interactive(),
+  ...
+)
 }
 \arguments{
 \item{path}{\code{character}, path to directory or file which should be read
@@ -111,7 +120,7 @@ s <- import(file.path(exampleDirectory, "compressed", "csv1.csv.gz"))
 
 }
 \references{
-\url{http://strimmerlab.org/software/maldiquant/}
+\url{https://strimmerlab.github.io/software/maldiquant/}
 }
 \seealso{
 \code{\link[MALDIquant]{MassSpectrum-class}},

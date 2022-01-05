@@ -1,4 +1,4 @@
-## Copyright 2012-2014 Sebastian Gibb
+## Copyright 2012-2020 Sebastian Gibb
 ## <mail@sebastiangibb.de>
 ##
 ## This file is part of MALDIquantForeign for R and related languages.
@@ -14,7 +14,7 @@
 ## GNU General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
+## along with MALDIquantForeign. If not, see <https://www.gnu.org/licenses/>
 
 .importTab <- function(file, centroided=FALSE, massRange=c(0L, Inf),
                        minIntensity=0L, skip=0L, sep=NULL, header=NULL,
@@ -35,7 +35,7 @@
   }
 
   ## load ms file
-  s <- read.table(text=text, header=header, sep=sep, skip=skip,
+  s <- read.table(text=text, header=header, sep=sep, skip=0L,
                   comment.char=comment.char, stringsAsFactors=FALSE, ...)
 
   list(.createMassObject(mass=s[, 1L], intensity=s[, 2L],
@@ -57,7 +57,7 @@
 }
 
 .autoHeader <- function(text, sep="\t") {
-  l <- gsub(pattern='[\\\\"]*', replacement="", x=text)
+  l <- gsub(pattern='[\\\\"]*', replacement="", x=text[1L])
   l <- strsplit(l, split=sep)[[1L]][1L]
   !is.numeric(type.convert(l, as.is=TRUE))
 }
@@ -65,7 +65,7 @@
 .autoSep <- function(text, sep=c(",", ";", "\t", " ")) {
   pattern <- paste0(".+", sep, ".+")
   i <- vapply(pattern, function(x) {
-    g <- gregexpr(pattern=x, text=text)[[1L]]
+    g <- gregexpr(pattern=x, text=text[1L])[[1L]]
     all(g > 0L) & length(g) == 1L
   }, logical(1L))
 

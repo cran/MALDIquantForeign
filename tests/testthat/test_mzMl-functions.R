@@ -13,7 +13,6 @@ test_that(".writeImzMlScanList", {
 "     </scan>",
 "    </scanList>"
 )
-
   MALDIquantForeign:::.writeImzMlScanList(m, file=f)
   expect_equal(readLines(f), r)
 })

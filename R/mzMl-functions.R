@@ -14,12 +14,17 @@
 ## GNU General Public License for more details.
 ##
 ## You should have received a copy of the GNU General Public License
-## along with MALDIquantForeign. If not, see <http://www.gnu.org/licenses/>
+## along with MALDIquantForeign. If not, see <https://www.gnu.org/licenses/>
 
 .writeMzMlDocument <- function(x, file, id, encoding="utf-8", imsArgs=list()) {
   ## stop if file isn't writeable
   if (file.exists(file) && file.access(file, 2) != 0) {
     stop("No permissions to write into ", sQuote(file), "!")
+  }
+
+  if (!MALDIquant:::.isMassObjectList(x)) {
+    stop("Only MALDIquant::MassSpectrum or MALDIquant::MassPeaks objects ",
+         "are supported!")
   }
 
   isIms <- length(imsArgs)
