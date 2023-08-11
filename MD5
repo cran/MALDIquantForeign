@@ -1,6 +1,6 @@
-28838347cb2787ed2e166694f1ba0893 *DESCRIPTION
+3fc8bcba7c2743ab3c9ad356273e99d5 *DESCRIPTION
 239f2ca23dfb8e6e1c412d77e5fef820 *NAMESPACE
-7af610e86a93241bed2eb274ba17f5e2 *NEWS
+1482ebab70725e04753da9333d96fd3c *NEWS
 468e3370a3294e48758e68bf44eb407f *R/AllGenerics.R
 cb42459b9b046fee4667dec625d0cfa6 *R/MALDIquantForeign-parallel.R
 f9b1350a757c7834f31ca532d25d1de5 *R/analyze-functions.R
@@ -18,7 +18,7 @@ d3fd02920e121a29e811d24dce0783b3 *R/exportMsd-methods.R
 9b2c039ff63220f1d8f2406aec505578 *R/filename-functions.R
 577b0fabac835a12bbe5e57a219380f1 *R/filename-methods.R
 4fef02cb2ff00e5602946fcd2b37454b *R/ibd-functions.R
-41c2fa66a2d0eac2049dd07daf653b63 *R/import-functions.R
+14e7c658a07e8045accc9fff15b0fc63 *R/import-functions.R
 3371975060c82b5119a62c8c7579bc8c *R/importAnalyze-functions.R
 ed4770aec8f1ea4c60650efe0ff348f0 *R/importAuto-functions.R
 c06d3b011a012c10d4bb3b3f32b873a2 *R/importBrukerFlex-functions.R
@@ -42,11 +42,11 @@ d4f6dc7b3fcac7a645b9ededbe1f7725 *R/sanitize-functions.R
 44d338127260829b963160af58e3bdf7 *R/testChecksum-functions.R
 0c89faab57ee2bd013c2d19cbbbcb453 *R/uuid-functions.R
 9bd11f78213543c6d61423efa00cdb23 *R/xml-functions.R
-f51f2da41b458c612fea76744802b23f *build/partial.rdb
-c2eff45f9af049e6e1eed616f4db400e *build/vignette.rds
+7080893e02c49cd296d4424b9be55069 *build/partial.rdb
+f686b85aa81158927e380ceedc87441c *build/vignette.rds
 52c2cb8ccc8897b4ce122bb81377b9b0 *inst/doc/MALDIquantForeign-intro.R
 fa3507f704915074f42215d1a7acaf19 *inst/doc/MALDIquantForeign-intro.Rnw
-dc581fbf32820844e6aa70ba792644a1 *inst/doc/MALDIquantForeign-intro.pdf
+6e6f60e2406115470e54790cf7e4ce2b *inst/doc/MALDIquantForeign-intro.pdf
 9274dd34d675950326a222a952309a17 *inst/exampledata/ascii.txt
 85077ca13692b5a2469af51d18cffd64 *inst/exampledata/brukerflex/0_A1/1/1SLin/acqu
 fe054ad2e7b98bee673f9ff22d50f00c *inst/exampledata/brukerflex/0_A1/1/1SLin/fid
@@ -77,7 +77,7 @@ f31b03d8e523f36d9aa3d5b0a989f486 *man/exportMsd-methods.Rd
 ff72c29bf9eb1cb7420ceb7560541251 *man/exportMzMl-methods.Rd
 8e9ba98d9189ee13a0314fc03db5120c *man/exportTab-methods.Rd
 0a2ef3fda9ad3e4845f8ce264ee960f6 *man/import-functions.Rd
-a6ab255c989ba7e0b8f64afa8ba7d0a5 *man/importAnalyze-functions.Rd
+5913b1aba8e892bb9dfd8ab3544315a6 *man/importAnalyze-functions.Rd
 438a331c57aecdcb4edc692ed912833f *man/importBrukerFlex-functions.Rd
 ad4373d5a94c132402c9d1e8036ee327 *man/importCdf-functions.Rd
 349b2edbae5b3fe5cc7d0487c9f9c624 *man/importCiphergenXml-functions.Rd
@@ -92,8 +92,8 @@ b798ecbef464ea1807946fa217445894 *tests/testthat/test_compression-functions.R
 0857bc348532e96bcfd91f7ae4d0475d *tests/testthat/test_createMassObject-functions.R
 debeabc712adc81b15966652fc9be840 *tests/testthat/test_download-functions.R
 e74111e7717d26f7790b4f8a1709213d *tests/testthat/test_exportImzMl-methods.R
-208ec10c169824675066ec8cb037aa54 *tests/testthat/test_exportMsd-methods.R
-bda24926bda8ba196607439c40bc8a0f *tests/testthat/test_exportMzMl-methods.R
+8f3ae0b444a353e6a37ec3bfacfb0e74 *tests/testthat/test_exportMsd-methods.R
+42593c8dd7bb81d9e2fa62354b68bc2d *tests/testthat/test_exportMzMl-methods.R
 bc154ef954d4012596f14aeeb9f9d90a *tests/testthat/test_exportTab-methods.R
 c0c445cb3dc0146a53ed5c7cb4326467 *tests/testthat/test_fileFormats.R
 4c794d2aa272d40186b93e7d19ab3d25 *tests/testthat/test_filename-functions.R
