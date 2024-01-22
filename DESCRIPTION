@@ -1,6 +1,6 @@
 Package: MALDIquantForeign
-Version: 0.14
-Date: 2023-08-11
+Version: 0.14.1
+Date: 2024-01-22
 Title: Import/Export Routines for 'MALDIquant'
 Authors@R: c(person("Sebastian", "Gibb", role=c("aut", "cre"),
         email="mail@sebastiangibb.de",
@@ -17,16 +17,17 @@ Description: Functions for reading (tab, csv, Bruker fid, Ciphergen
         formats of mass spectrometry data into/from 'MALDIquant'
         objects.
 License: GPL (>= 3)
-URL: https://strimmerlab.github.io/software/maldiquant/
+URL: https://strimmerlab.github.io/software/maldiquant/,
         https://github.com/sgibb/MALDIquantForeign/
 BugReports: https://github.com/sgibb/MALDIquantForeign/issues/
 LazyLoad: yes
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0
+Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2023-08-11 11:43:53 UTC; sebastian
+Packaged: 2024-01-22 20:59:12 UTC; sebastian
 Author: Sebastian Gibb [aut, cre] (<https://orcid.org/0000-0001-7406-4443>),
   Pietro Franceschi [ctb]
 Maintainer: Sebastian Gibb <mail@sebastiangibb.de>
 Repository: CRAN
-Date/Publication: 2023-08-11 21:53:46 UTC
+Date/Publication: 2024-01-22 21:32:54 UTC

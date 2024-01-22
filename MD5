@@ -1,6 +1,6 @@
-3fc8bcba7c2743ab3c9ad356273e99d5 *DESCRIPTION
+18473109df1530cf7baa283b24fe4a80 *DESCRIPTION
 239f2ca23dfb8e6e1c412d77e5fef820 *NAMESPACE
-1482ebab70725e04753da9333d96fd3c *NEWS
+187592679f1af1d865f377bd03fcbbd5 *NEWS
 468e3370a3294e48758e68bf44eb407f *R/AllGenerics.R
 cb42459b9b046fee4667dec625d0cfa6 *R/MALDIquantForeign-parallel.R
 f9b1350a757c7834f31ca532d25d1de5 *R/analyze-functions.R
@@ -34,7 +34,7 @@ d92ab30da765f0d80987a3477b92fa74 *R/importTab-functions.R
 e5d102e802ed4fd8f4ee4cc1979a4c3e *R/msd-functions.R
 f19d21cfff588c1025ce88d1cd237426 *R/msg-functions.R
 d851edfeaf58521dc72cd3913e64bd30 *R/mzMl-functions.R
-d8fe5fb6af02a3458170a93157d5b2dd *R/package.R
+a7cde2607138da51b60b56948ddb0087 *R/package.R
 cdc0028d88e43ac7fef5d9b0ee0a2dcb *R/parseCiphergenXml.R
 76f9f0f45f43a0fee5527580d08afcb6 *R/parseMsd.R
 230f437d9b1bb85466689fe8b11b9d7a *R/parseMzMl.R
@@ -42,11 +42,11 @@ d4f6dc7b3fcac7a645b9ededbe1f7725 *R/sanitize-functions.R
 44d338127260829b963160af58e3bdf7 *R/testChecksum-functions.R
 0c89faab57ee2bd013c2d19cbbbcb453 *R/uuid-functions.R
 9bd11f78213543c6d61423efa00cdb23 *R/xml-functions.R
-7080893e02c49cd296d4424b9be55069 *build/partial.rdb
-f686b85aa81158927e380ceedc87441c *build/vignette.rds
+f61db891eb928123aba4412ca322f508 *build/partial.rdb
+7ca8bfc075f62a5a8f86a841775aafb1 *build/vignette.rds
 52c2cb8ccc8897b4ce122bb81377b9b0 *inst/doc/MALDIquantForeign-intro.R
-fa3507f704915074f42215d1a7acaf19 *inst/doc/MALDIquantForeign-intro.Rnw
-6e6f60e2406115470e54790cf7e4ce2b *inst/doc/MALDIquantForeign-intro.pdf
+9600ed294b05bd28e4b08efc2bd0ba84 *inst/doc/MALDIquantForeign-intro.Rnw
+dc72a3ad4799d8af4bcbe71e9726451b *inst/doc/MALDIquantForeign-intro.pdf
 9274dd34d675950326a222a952309a17 *inst/exampledata/ascii.txt
 85077ca13692b5a2469af51d18cffd64 *inst/exampledata/brukerflex/0_A1/1/1SLin/acqu
 fe054ad2e7b98bee673f9ff22d50f00c *inst/exampledata/brukerflex/0_A1/1/1SLin/fid
@@ -68,7 +68,7 @@ dcd657ee36f05b2b7be19f4db23184a4 *inst/exampledata/tiny_continuous.ibd
 2decd26e6ba4ee132ab91fbe21125390 *inst/exampledata/tiny_continuous.imzML
 1bcd45de54f0180c38afceb468371971 *inst/exampledata/tiny_processed.ibd
 ff2f70b3f12cb3cdafdcbe81b856a3ed *inst/exampledata/tiny_processed.imzML
-2135cf08aee7372bb94f2d8751390022 *man/MALDIquantForeign-package.Rd
+87f5c724abd0bb9ff676efa05ed2c40d *man/MALDIquantForeign-package.Rd
 88ad938fdbfb2b78ae7952182b3b156f *man/MALDIquantForeign-parallel.Rd
 6de4e4e3f192010756eabc50c291753e *man/base64-encode.Rd
 0fb40e9f5596930a603e9586d4b86a5f *man/export-methods.Rd
@@ -112,5 +112,5 @@ c0ef452eab581e6b3f15b30f0101481f *tests/testthat/test_mzMl-functions.R
 62f4062ce2e6a8e8bb3aacefded07bf0 *tests/testthat/test_sanitize-functions.R
 c107102debc5d24e6096c38dde9199fc *tests/testthat/test_testChecksum-functions.R
 09171eb807444e4b40e76a31edec4eec *tests/testthat/test_uuid-functions.R
-fa3507f704915074f42215d1a7acaf19 *vignettes/MALDIquantForeign-intro.Rnw
+9600ed294b05bd28e4b08efc2bd0ba84 *vignettes/MALDIquantForeign-intro.Rnw
 dcdcd775ae2bcfb2aea05af8e6921bef *vignettes/bibliography.bib
